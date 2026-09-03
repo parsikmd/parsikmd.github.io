@@ -1,13 +1,96 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Пример веб-страницы</title>
- </head>
- <body>
-  <h1>Заголовок</h1>
-  <!-- Комментарий -->
-  <p>Первый абзац.</p>
-  <p>Второй абзац.</p>
- </body>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Простой макет страницы</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #222;
+    background: #f5f5f5;
+  }
+  header {
+    background: #2c3e50;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+  }
+  nav {
+    background: #34495e;
+    padding: 10px;
+    text-align: center;
+  }
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 15px;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
+  .container {
+    display: flex;
+    max-width: 960px;
+    margin: 20px auto;
+    gap: 20px;
+    padding: 0 20px;
+  }
+  main {
+    flex: 3;
+    background: #fff;
+    padding: 20px;
+    border-radius: 4px;
+  }
+  aside {
+    flex: 1;
+    background: #fff;
+    padding: 20px;
+    border-radius: 4px;
+  }
+  footer {
+    text-align: center;
+    padding: 15px;
+    background: #2c3e50;
+    color: #fff;
+  }
+  @media (max-width: 600px) {
+    .container {
+      flex-direction: column;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Заголовок сайта</h1>
+</header>
+
+<nav>
+  <a href="#">Главная</a>
+  <a href="#">О нас</a>
+  <a href="#">Контакты</a>
+</nav>
+
+<div class="container">
+  <main>
+    <h2>Основной контент</h2>
+    <p>Первый абзац основного текста.</p>
+    <p>Второй абзац основного текста.</p>
+  </main>
+
+  <aside>
+    <h3>Боковая панель</h3>
+    <p>Дополнительная информация.</p>
+  </aside>
+</div>
+
+<footer>
+  <p>&copy; 2026 Пример сайта</p>
+</footer>
+
+</body>
 </html>
