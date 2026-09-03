@@ -3,93 +3,529 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Простой макет страницы</title>
+<title>parsikmd — портфолио</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,500;0,700;1,600&family=Golos+Text:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 <style>
+  :root {
+    --bg: #eef0ea;
+    --surface: #ffffff;
+    --surface-2: #e4e6de;
+    --line: #d3d6cb;
+    --ink: #171b17;
+    --ink-soft: #5b6259;
+    --accent: #0f8f74;
+    --accent-ink: #ffffff;
+    --accent-2: #b85a34;
+    --code-bg: #12161c;
+    --code-ink: #e7ebe6;
+    --code-soft: #8f9bab;
+    --shadow: 0 10px 30px -18px rgba(23,27,23,.35);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #12161c;
+      --surface: #1a2029;
+      --surface-2: #212836;
+      --line: #2b3340;
+      --ink: #eef1f5;
+      --ink-soft: #8f9bab;
+      --accent: #4fd1ae;
+      --accent-ink: #0c1712;
+      --accent-2: #e8905c;
+      --code-bg: #0c1013;
+      --code-ink: #eef1f5;
+      --code-soft: #6e7a8a;
+      --shadow: 0 10px 34px -16px rgba(0,0,0,.55);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #12161c;
+    --surface: #1a2029;
+    --surface-2: #212836;
+    --line: #2b3340;
+    --ink: #eef1f5;
+    --ink-soft: #8f9bab;
+    --accent: #4fd1ae;
+    --accent-ink: #0c1712;
+    --accent-2: #e8905c;
+    --code-bg: #0c1013;
+    --code-ink: #eef1f5;
+    --code-soft: #6e7a8a;
+    --shadow: 0 10px 34px -16px rgba(0,0,0,.55);
+  }
+
   * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
   body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    color: #222;
-    background: #f5f5f5;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Golos Text", Arial, sans-serif;
+    line-height: 1.6;
   }
-  header {
-    background: #2c3e50;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
+  a { color: inherit; }
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 28px;
   }
-  nav {
-    background: #34495e;
-    padding: 10px;
-    text-align: center;
+  .mono {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
   }
-  nav a {
-    color: #fff;
-    text-decoration: none;
-    margin: 0 15px;
+  .kicker {
+    font: 600 12px/1 "IBM Plex Mono", monospace;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
   }
-  nav a:hover {
-    text-decoration: underline;
+
+  /* ---------- nav ---------- */
+  header.top {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(10px);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    border-bottom: 1px solid var(--line);
   }
-  .container {
+  .navrow {
     display: flex;
-    max-width: 960px;
-    margin: 20px auto;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0;
+  }
+  .brand {
+    font-family: "IBM Plex Mono", monospace;
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    letter-spacing: -.01em;
+  }
+  .brand .dot { color: var(--accent); }
+  nav.links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  nav.links a {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    position: relative;
+    padding-bottom: 3px;
+  }
+  nav.links a::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 100%;
+    bottom: 0;
+    height: 1px;
+    background: var(--accent);
+    transition: right .2s ease;
+  }
+  nav.links a:hover { color: var(--ink); }
+  nav.links a:hover::after { right: 0; }
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font: 500 12px/1 "IBM Plex Mono", monospace;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    padding: 6px 10px;
+    border-radius: 999px;
+  }
+  .status .pulse {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent);
+    animation: pulse 2.2s ease-out infinite;
+  }
+  @keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 45%, transparent); }
+    70%  { box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 0%, transparent); }
+    100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); }
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding: 64px 0 56px;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero h1 {
+    font-family: "Alegreya", serif;
+    font-weight: 700;
+    font-size: clamp(34px, 5vw, 54px);
+    line-height: 1.08;
+    letter-spacing: -.01em;
+    margin: 14px 0 18px;
+    text-wrap: balance;
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .hero p.lead {
+    max-width: 46ch;
+    color: var(--ink-soft);
+    font-size: 16px;
+    margin: 0 0 28px;
+  }
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    font: 600 14px/1 "Golos Text", sans-serif;
+    text-decoration: none;
+    padding: 13px 20px;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform .15s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  .btn-primary:hover { transform: translateY(-1px); }
+  .btn-ghost {
+    border: 1px solid var(--line);
+    color: var(--ink);
+  }
+  .btn-ghost:hover { border-color: var(--accent); }
+
+  /* ---------- terminal card ---------- */
+  .term {
+    background: var(--code-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+  }
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 14px;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .term-bar span.dot { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.16); }
+  .term-bar .file {
+    margin-left: 6px;
+    font: 500 12px/1 "IBM Plex Mono", monospace;
+    color: var(--code-soft);
+  }
+  .term pre {
+    margin: 0;
+    padding: 20px 18px 22px;
+    font: 400 13.5px/1.8 "IBM Plex Mono", monospace;
+    color: var(--code-ink);
+    overflow-x: auto;
+  }
+  .tk-kw   { color: #e8905c; }
+  .tk-key  { color: #7fb0e0; }
+  .tk-str  { color: #4fd1ae; }
+  .tk-punc { color: var(--code-soft); }
+
+  /* ---------- stack strip ---------- */
+  .stack {
+    padding: 8px 0 56px;
+    border-bottom: 1px solid var(--line);
+  }
+  .chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .chip {
+    font: 500 13px/1 "IBM Plex Mono", monospace;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink-soft);
+    padding: 9px 13px;
+    border-radius: 7px;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .chip:hover { border-color: var(--accent-2); color: var(--ink); }
+
+  /* ---------- projects ---------- */
+  .projects { padding: 56px 0; }
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
     gap: 20px;
-    padding: 0 20px;
+    margin-bottom: 26px;
   }
-  main {
-    flex: 3;
-    background: #fff;
-    padding: 20px;
-    border-radius: 4px;
+  .section-head h2 {
+    font-family: "Alegreya", serif;
+    font-weight: 700;
+    font-size: 28px;
+    margin: 6px 0 0;
   }
-  aside {
-    flex: 1;
-    background: #fff;
-    padding: 20px;
-    border-radius: 4px;
+  .section-head p { margin: 0; color: var(--ink-soft); font-size: 14px; max-width: 34ch; text-align: right; }
+
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 16px;
   }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow);
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  }
+  .card.lg { grid-column: span 2; grid-row: span 1; }
+  .card .path {
+    font: 500 12px/1 "IBM Plex Mono", monospace;
+    color: var(--accent-2);
+  }
+  .card h3 {
+    font-family: "Alegreya", serif;
+    font-weight: 600;
+    font-size: 20px;
+    margin: 0;
+  }
+  .card p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+    flex-grow: 1;
+  }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .tag {
+    font: 500 11px/1 "IBM Plex Mono", monospace;
+    letter-spacing: .02em;
+    background: var(--surface-2);
+    color: var(--ink-soft);
+    padding: 5px 8px;
+    border-radius: 5px;
+  }
+
+  /* ---------- stats ---------- */
+  .stats {
+    padding: 8px 0 60px;
+    display: grid;
+    grid-template-columns: 1.3fr repeat(3, 1fr);
+    gap: 24px;
+    align-items: start;
+    border-top: 1px solid var(--line);
+    padding-top: 48px;
+  }
+  .stats p.about {
+    color: var(--ink-soft);
+    font-size: 15px;
+    max-width: 42ch;
+    margin: 10px 0 0;
+  }
+  .stat b {
+    display: block;
+    font-family: "Alegreya", serif;
+    font-weight: 700;
+    font-size: 34px;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat span {
+    display: block;
+    margin-top: 4px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- footer ---------- */
   footer {
-    text-align: center;
-    padding: 15px;
-    background: #2c3e50;
-    color: #fff;
+    border-top: 1px solid var(--line);
+    padding: 44px 0 36px;
   }
-  @media (max-width: 600px) {
-    .container {
-      flex-direction: column;
-    }
+  .contact-cmd {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font: 500 14px/1 "IBM Plex Mono", monospace;
+    background: var(--code-bg);
+    color: var(--code-ink);
+    padding: 14px 18px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 1px solid var(--line);
+  }
+  .contact-cmd .tk-kw { font-weight: 600; }
+  .contact-cmd:hover { border-color: var(--accent); }
+  .foot-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .foot-links { display: flex; gap: 20px; }
+  .foot-links a {
+    font: 500 13px/1 "IBM Plex Mono", monospace;
+    text-decoration: none;
+    color: var(--ink-soft);
+    border-bottom: 1px solid transparent;
+  }
+  .foot-links a:hover { color: var(--ink); border-color: var(--accent); }
+  .copyright { font-size: 13px; color: var(--ink-soft); }
+
+  @media (max-width: 760px) {
+    .hero { grid-template-columns: 1fr; padding-top: 40px; }
+    .bento { grid-template-columns: 1fr; }
+    .card.lg { grid-column: span 1; }
+    .stats { grid-template-columns: 1fr; }
+    .section-head { flex-direction: column; align-items: flex-start; }
+    .section-head p { text-align: left; }
+    nav.links { display: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .status .pulse { animation: none; }
+    .card, .btn-primary { transition: none; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>Заголовок сайта</h1>
+<header class="top">
+  <div class="wrap navrow">
+    <a class="brand" href="#">parsikmd<span class="dot">.</span></a>
+    <nav class="links">
+      <a href="#stack">Стек</a>
+      <a href="#projects">Проекты</a>
+      <a href="#contact">Контакты</a>
+    </nav>
+    <span class="status"><span class="pulse"></span>open to work</span>
+  </div>
 </header>
 
-<nav>
-  <a href="#">Главная</a>
-  <a href="#">О нас</a>
-  <a href="#">Контакты</a>
-</nav>
+<main class="wrap">
 
-<div class="container">
-  <main>
-    <h2>Основной контент</h2>
-    <p>Первый абзац основного текста.</p>
-    <p>Второй абзац основного текста.</p>
-  </main>
+  <section class="hero">
+    <div>
+      <p class="kicker">Портфолио — 2026</p>
+      <h1>Превращаю запутанные интерфейсы в <em>простые</em> решения.</h1>
+      <p class="lead">Фронтенд-разработка на стыке инженерии и дизайна: быстрые интерфейсы, аккуратная типографика, ничего лишнего.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="#contact">Написать</a>
+        <a class="btn btn-ghost" href="#projects">Смотреть проекты</a>
+      </div>
+    </div>
 
-  <aside>
-    <h3>Боковая панель</h3>
-    <p>Дополнительная информация.</p>
-  </aside>
-</div>
+    <div class="term">
+      <div class="term-bar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="file">whoami.ts</span>
+      </div>
+      <pre><span class="tk-kw">const</span> <span class="tk-key">dev</span> <span class="tk-punc">=</span> <span class="tk-punc">{</span>
+  name<span class="tk-punc">:</span>   <span class="tk-str">"parsikmd"</span><span class="tk-punc">,</span>
+  role<span class="tk-punc">:</span>   <span class="tk-str">"Frontend Engineer"</span><span class="tk-punc">,</span>
+  stack<span class="tk-punc">:</span>  <span class="tk-punc">[</span><span class="tk-str">"TypeScript"</span><span class="tk-punc">,</span> <span class="tk-str">"React"</span><span class="tk-punc">,</span> <span class="tk-str">"CSS"</span><span class="tk-punc">]</span><span class="tk-punc">,</span>
+  focus<span class="tk-punc">:</span>  <span class="tk-str">"интерфейсы и анимация"</span><span class="tk-punc">,</span>
+  status<span class="tk-punc">:</span> <span class="tk-str">"open to work"</span><span class="tk-punc">,</span>
+<span class="tk-punc">}</span><span class="tk-punc">;</span></pre>
+    </div>
+  </section>
 
-<footer>
-  <p>&copy; 2026 Пример сайта</p>
+  <section class="stack" id="stack">
+    <p class="kicker">Инструменты</p>
+    <div class="chip-row">
+      <span class="chip">TypeScript</span>
+      <span class="chip">React</span>
+      <span class="chip">Next.js</span>
+      <span class="chip">CSS / SCSS</span>
+      <span class="chip">Node.js</span>
+      <span class="chip">Figma</span>
+      <span class="chip">Framer Motion</span>
+      <span class="chip">Git</span>
+    </div>
+  </section>
+
+  <section class="projects" id="projects">
+    <div class="section-head">
+      <div>
+        <p class="kicker">Избранное</p>
+        <h2>Последние проекты</h2>
+      </div>
+      <p>Три работы за последний год — от дашбордов до инструментов для разработчиков.</p>
+    </div>
+    <div class="bento">
+      <article class="card lg">
+        <span class="path mono">~/projects/dash-ui</span>
+        <h3>Dashboard UI Kit</h3>
+        <p>Конструктор дашбордов с готовыми виджетами, графиками и тёмной темой из коробки.</p>
+        <div class="tag-row">
+          <span class="tag">React</span>
+          <span class="tag">Charts</span>
+          <span class="tag">DX</span>
+        </div>
+      </article>
+      <article class="card">
+        <span class="path mono">~/projects/pulse-chat</span>
+        <h3>Pulse Chat</h3>
+        <p>WebSocket-чат с индикаторами присутствия и историей сообщений в реальном времени.</p>
+        <div class="tag-row">
+          <span class="tag">WebSocket</span>
+          <span class="tag">Node.js</span>
+        </div>
+      </article>
+      <article class="card">
+        <span class="path mono">~/projects/type-forge</span>
+        <h3>Type Forge</h3>
+        <p>Генератор портфолио: превращает markdown-заметки в статичный сайт одной командой.</p>
+        <div class="tag-row">
+          <span class="tag">Astro</span>
+          <span class="tag">CLI</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div>
+      <p class="kicker">Коротко о себе</p>
+      <p class="about">Работаю на стыке фронтенда и дизайна: слежу, чтобы интерфейс не только красиво выглядел, но и не тормозил на слабом железе.</p>
+    </div>
+    <div class="stat"><b>6 лет</b><span>в разработке интерфейсов</span></div>
+    <div class="stat"><b>40+</b><span>проектов — от лендингов до дашбордов</span></div>
+    <div class="stat"><b>12</b><span>open-source вкладов в этом году</span></div>
+  </section>
+
+</main>
+
+<footer class="wrap" id="contact">
+  <p class="kicker">Контакты</p>
+  <a class="contact-cmd" href="mailto:hello@parsikmd.dev">
+    <span class="tk-kw">$</span> curl&nbsp;-X&nbsp;POST&nbsp;/contact&nbsp;-d&nbsp;"привет"
+  </a>
+  <div class="foot-row">
+    <div class="foot-links">
+      <a href="https://github.com/parsikmd">GitHub</a>
+      <a href="#">Telegram</a>
+      <a href="mailto:hello@parsikmd.dev">Email</a>
+    </div>
+    <p class="copyright">© 2026 parsikmd — собрано на чистом HTML/CSS</p>
+  </div>
 </footer>
 
 </body>
